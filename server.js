@@ -12,6 +12,8 @@ app.use(bodyParser.json());
 
 var port = 9000;
 
+var mongoose = require("mongoose");
+
 // Routes
 var router = express.Router();
 
