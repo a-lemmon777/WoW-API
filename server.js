@@ -10,7 +10,7 @@ var bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({"extended": true})); // why true?
 app.use(bodyParser.json());
 
-var port = process.env.PORT || 8080;
+var port = 9000;
 
 // Routes
 var router = express.Router();
@@ -25,4 +25,5 @@ app.use("/api", router);
 
 // Start the server
 app.listen(port);
-console.log("Check out port " + port);
+console.log("Server listening on port " + port);
+
