@@ -5,13 +5,21 @@
 
 // Some base setup
 var express = require('express');
+var mongoose = require('mongoose');
+
 var app = express();
+//var Account = require('./api/account/account.controller');
 app.set('port', (process.env.PORT || 5000));
 
-app.get('/', function(request, response) {
-   response.send("It's still working well!");
-});
+// Routes
+//var router = express.Router();
+//app.get('/', function(request, response) {
+//   response.send("It's still working well!");
+//});
 
+require('./routes')(app);
+
+// Begin listening
 app.listen(app.get('port'), function() {
     console.log("API is running on port " + app.get('port'));
 });

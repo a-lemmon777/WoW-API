@@ -2,9 +2,9 @@
   "name": "WoW-API",
   "version": "1.0.0",
   "description": "A web API for managing World of Warcraft characters.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "node app.js",
     "test": "karma start"
   },
   "repository": {
@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/lemmo031/WoW-API",
   "dependencies": {
-    "express": "^4.12.3"
+    "express": "^4.12.3",
+    "mongoose": "^4.0.0"
   }
 }
