@@ -4,6 +4,7 @@
   "description": "A web API for managing World of Warcraft characters.",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test": "karma start"
   },
   "repository": {
