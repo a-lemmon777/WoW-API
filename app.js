@@ -6,7 +6,8 @@
 // Some base setup
 var express = require('express');
 var mongoose = require('mongoose');
-
+var mongoURI = process.env.MONGO_URI || undefinded;
+mongoose.connect(mongoURI);
 var app = express();
 //var Account = require('./api/account/account.controller');
 app.set('port', (process.env.PORT || 5000));
