@@ -19,7 +19,7 @@ var multer = require('multer');
 // Would put any received files in the uploads directory
 app.use(multer({dest: './uploads/'})); // For parsing multipart/form-data
 
-
+console.log("Starting up");
 
 //var Account = require('./api/account/account.model');
 app.set('port', 5000);
