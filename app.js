@@ -53,11 +53,11 @@ console.log("Starting up");
 
 // Register routes
 //app.use('/api', router);
-//require('./routes')(app);
+require('./routes')(app);
 
-app.get('/', function(request, response) {
-    response.send('Hello World!');
-});
+//app.get('/', function(request, response) {
+//    response.send('Hello World!');
+//});
 
 // Begin listening
 app.listen(app.get('port'), function() {
