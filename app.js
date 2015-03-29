@@ -21,37 +21,38 @@ app.use(multer({dest: './uploads/'})); // For parsing multipart/form-data
 
 
 
-var Account = require('./api/account/account.model');
+//var Account = require('./api/account/account.model');
 app.set('port', 5000);
 
 // Routes
-var router = express.Router();
-
-router.get('/', function(request, response) {
-   response.json({message: "It's still working well!"});
-});
-
-// Middleware for all requests
-router.use(function(request, response, next) {
-    console.log("Got a request!");
-    next();
-});
-
-router.route('/account').post(function(request, response) {
-    var account = new Account();
-    console.log(request.body);
-    account.account_name = request.body.name;
-
-    account.save(function(err) {
-        if (err) {
-            response.send(err);
-        }
-        response.json(account);
-    });
-});
+//var router = express.Router();
+//
+//router.get('/', function(request, response) {
+//   response.json({message: "It's still working well!"});
+//});
+//
+//// Middleware for all requests
+//router.use(function(request, response, next) {
+//    console.log("Got a request!");
+//    next();
+//});
+//
+//router.route('/account').post(function(request, response) {
+//    var account = new Account();
+//    console.log(request.body);
+//    account.account_name = request.body.name;
+//
+//    account.save(function(err) {
+//        if (err) {
+//            response.send(err);
+//        }
+//        response.json(account);
+//    });
+//});
 
 // Register routes
-app.use('/api', router);
+//app.use('/api', router);
+require('./routes')(app);
 
 // Begin listening
 app.listen(app.get('port'), function() {
