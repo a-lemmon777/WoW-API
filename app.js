@@ -3,24 +3,33 @@
  */
 'use strict';
 
-// Some base setup
+// Setting up express
 var express = require('express');
-var mongoose = require('mongoose');
-
-// Database connection uses temporary credentials
-mongoose.connect('mongodb://devUser:devPass@ds045531.mongolab.com:45531/heroku_app35323377');
 var app = express();
 app.set('port', (process.env.PORT || 5000));
 
-//Incoming data parsing
+// Setting up database
+var mongoose = require('mongoose');
+mongoose.connect('mongodb://devUser:devPass@ds045531.mongolab.com:45531/heroku_app35323377'); // uses temporary credentials
+
+// Parsing tools for all the incoming data formats I could think of.
 var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({"extended": true})); // For parsing application/x-www-form-urlencoded format
 app.use(bodyParser.json({"type": ["json", "js", "text/*"]})); // For parsing json, javascript, and text formats
 var multer = require('multer');
-// Would put any received files in the uploads directory
-app.use(multer({dest: './uploads/'})); // For parsing multipart/form-data
+app.use(multer({dest: './uploads/'})); // For parsing multipart/form-data, would put any received files in the uploads directory
 
-console.log("Starting up");
+// Register routes
+require('./routes')(app);
+
+// Begin listening
+app.listen(app.get('port'), function() {
+    console.log("API is running on port " + app.get('port'));
+});
+
+// OTHER USEFUL STUFF?
+
+//console.log("Starting up");
 
 //var Account = require('./api/account/account.model');
 
@@ -53,13 +62,8 @@ console.log("Starting up");
 
 // Register routes
 //app.use('/api', router);
-require('./routes')(app);
+
 
 //app.get('/', function(request, response) {
 //    response.send('Hello World!');
 //});
-
-// Begin listening
-app.listen(app.get('port'), function() {
-    console.log("API is running on port " + app.get('port'));
-});
