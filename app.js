@@ -10,7 +10,7 @@ var express = require('express');
 // Database connection uses temporary credentials
 //mongoose.connect('mongodb://devUser:devPass@ds045531.mongolab.com:45531/heroku_app35323377');
 var app = express();
-app.set('port', 5000);
+app.set('port', (process.env.PORT || 5000));
 // Incoming data parsing
 //var bodyParser = require('body-parser');
 //app.use(bodyParser.urlencoded({"extended": true})); // For parsing application/x-www-form-urlencoded format
