@@ -6,5 +6,6 @@
 module.exports = function(app) {
 
     // Routes
+    app.use('/', require('./api/home'));
     app.use('/account', require('./api/account'));
 };

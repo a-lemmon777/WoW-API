@@ -24,13 +24,13 @@ app.use(multer({dest: './uploads/'})); // For parsing multipart/form-data
 //var Account = require('./api/account/account.model');
 app.set('port', 5000);
 
-// Routes
+//Routes
 //var router = express.Router();
 //
 //router.get('/', function(request, response) {
 //   response.json({message: "It's still working well!"});
 //});
-//
+
 //// Middleware for all requests
 //router.use(function(request, response, next) {
 //    console.log("Got a request!");
