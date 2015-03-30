@@ -4,6 +4,6 @@
 'use strict';
 
 exports.displayGreeting = function(request, response) {
-    console.log("Welcome!");
+    //console.log("Welcome!");
     response.send("Welcome to the World of Warcraft API!");
 };

@@ -7,6 +7,7 @@ var express = require('express');
 var controller = require('./home.controller');
 var router = express.Router();
 
+// Routing for {my-service-url}/
 router.get('/', controller.displayGreeting);
 
 module.exports = router;

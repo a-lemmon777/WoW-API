@@ -10,8 +10,17 @@ exports.createAccount = function(request, response) {
     newAccount.account_name = request.body.name;
     newAccount.save(function(err, account) {
         if (err) { return handleError(response, err); }
-        console.log("Added a new account!");
+        //console.log("Added a new account!");
         return response.status(200).json(newAccount);
+    });
+};
+
+exports.getAllAccounts = function(request, response) {
+    var returnBody = {accounts: []};
+    Account.find({}, function (err, accounts) {
+        if (err) { return handleError(response, err); }
+        returnBody.accounts = accounts;
+        return response.status(200).json(returnBody);
     });
 };
 

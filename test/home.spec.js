@@ -4,8 +4,8 @@
 var app = require('../app');
 var request = require('supertest');
 
-describe('Home', function() {
-    it('should display a message for GET', function(done) {
+describe('GET /', function() {
+    it('should display a message detailing how to use the API', function(done) {
         request(app)
             .get('/')
             .expect(200)
