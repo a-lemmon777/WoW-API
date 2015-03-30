@@ -2,10 +2,6 @@
  * Created by a.lemmon777 on 3/29/2015.
  */
 var app = require('../app');
-
-//var express = require('../app.js');
-//var app = express();
-var should = require('should');
 var request = require('supertest');
 
 describe('Home', function() {
@@ -18,10 +14,5 @@ describe('Home', function() {
                 if (err) return done(err);
                 done();
             });
-    });
-
-    it('should not pass', function(done) {
-        //throw "not passing";
-        done();
     });
 });
