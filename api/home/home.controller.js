@@ -5,5 +5,5 @@
 
 exports.displayGreeting = function(request, response) {
     console.log("Welcome!");
-    response.send("Welcome to the WoW API!");
+    response.send("Welcome to the World of Warcraft API!");
 };
