@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "test": ".\\node_modules\\.bin\\karma start"
+    "test": ".\\node_modules\\.bin\\mocha"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,8 @@
     "node": "^0.12.1"
   },
   "devDependencies": {
-    "jasmine-core": "^2.2.0",
-    "karma": "^0.12.31",
-    "karma-cli": "0.0.4",
-    "karma-jasmine": "^0.3.5"
+    "mocha": "^2.2.1",
+    "should": "^5.2.0",
+    "supertest": "^0.15.0"
   }
 }

@@ -27,6 +27,8 @@ app.listen(app.get('port'), function() {
     console.log("API is running on port " + app.get('port'));
 });
 
+module.exports = app;
+
 // OTHER USEFUL STUFF?
 
 //console.log("Starting up");
