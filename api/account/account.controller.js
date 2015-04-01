@@ -11,15 +11,16 @@ exports.createAccount = function(request, response) {
     newAccount.save(function(err, account) {
         if (err) { return handleError(response, err); }
         //console.log("Added a new account!");
-        return response.status(200).json(newAccount);
+        return response.status(200).json(newAccount.toObject());
     });
 };
 
 exports.getAllAccounts = function(request, response) {
     var returnBody = {accounts: []};
-    Account.find({}, function (err, accounts) {
+    Account.find().exec(function (err, accounts) {
         if (err) { return handleError(response, err); }
-        returnBody.accounts = accounts;
+        returnBody.accounts = accounts.map(Account.toClient);
+        //returnBody.accounts = accounts;
         return response.status(200).json(returnBody);
     });
 };
