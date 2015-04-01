@@ -13,8 +13,10 @@ var AccountSchema = new Schema({
 
 if (!AccountSchema.options.toObject) AccountSchema.options.toObject = {}; // Make an options object if there isn't one
 AccountSchema.options.toObject.transform = function(doc, ret, options) {
+    ret.account_id = ret._id;
     // remove these fields before returning the result
     delete ret.__v;
+    delete ret._id;
 };
 
 //AccountSchema.statics.getAllAccounts = function(callback) {
