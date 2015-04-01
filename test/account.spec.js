@@ -8,15 +8,11 @@ var Account = require('../api/account/account.model');
 
 describe('GET /account', function() {
     beforeEach(function(done) {
-        Account.remove().exec().then(function () {
-            done();
-        });
+        Account.remove({}, done);
     });
 
     after(function(done) {
-        Account.remove().exec().then(function() {
-            done();
-        });
+        Account.remove({}, done);
     });
 
     it('should get an object with an empty array if the database is empty', function(done) {
@@ -33,10 +29,8 @@ describe('GET /account', function() {
     });
 
     it('should get an object with an array of length 2 if the database has 2 accounts', function(done) {
-        var account1 = new Account({account_name: "TeamTed"});
-        var account2 = new Account({account_name: "TeamTheresa"});
-        account1.save(function() {
-            account2.save(function() {
+        Account.create({account_name: "TeamTed"}, function() {
+            Account.create({account_name: "TeamTheresa"}, function() {
                 request(app)
                     .get('/account')
                     .expect(200)
@@ -67,6 +61,36 @@ describe('POST /account', function() {
                 if (err) return done(err);
                 response.body.should.have.property('account_id');
                 response.body.account_name.should.equal("testAccount");
+                done();
+            });
+    });
+});
+
+describe('POST /account/{acount_name}/characters', function() {
+    beforeEach(function(done) {
+        Account.remove({}, function() {
+            Account.create({account_name: "Rocky"}, done);
+        });
+    });
+
+    after(function(done) {
+        Account.remove({}, done);
+    });
+
+    it('should be able to add another character', function(done) {
+        request(app)
+            .post('/account/Rocky/characters')
+            .send({name: "Blackhand", race: "Orc", class: "Warrior", faction: "Horde", level: 45})
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .end(function (err, response) {
+                if (err) return done(err);
+                response.body.should.have.property("character_id");
+                response.body.name.should.equal("Blackhand");
+                response.body.race.should.equal("Orc");
+                response.body.class.should.equal("Warrior");
+                response.body.faction.should.equal("Horde");
+                response.body.level.should.equal(45);
                 done();
             });
     });
