@@ -47,6 +47,8 @@ describe('GET /account', function() {
                         response.body.accounts.should.have.length(2);
                         response.body.accounts[0].should.have.property("account_id");
                         response.body.accounts[0].should.have.property("account_name");
+                        response.body.accounts[0].should.not.have.property("__v");
+                        response.body.accounts[0].should.not.have.property("_id");
                         done();
                     });
             });

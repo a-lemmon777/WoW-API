@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var AccountSchema = new Schema({
-    //account_id: Number,
     account_name: String//,
     //"characters":
 });
