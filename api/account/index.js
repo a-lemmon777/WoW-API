@@ -7,7 +7,7 @@ var express = require('express');
 var controller = require('./account.controller');
 var router = express.Router();
 
-// Routing for account/
+// Routing for {my-service-url}/account
 router.get('/', controller.getAllAccounts);
 router.post('/', controller.createAccount);
 
