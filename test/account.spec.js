@@ -61,7 +61,7 @@ describe('POST /account', function() {
             .expect('Content-Type', /json/)
             .end(function (err, response) {
                 if (err) return done(err);
-                response.body.should.have.property('_id');
+                response.body.should.have.property('account_id');
                 response.body.account_name.should.equal("testAccount");
                 done();
             });
