@@ -45,6 +45,8 @@ describe('GET /account', function() {
                         if (err) return done(err);
                         response.body.should.have.property("accounts");
                         response.body.accounts.should.have.length(2);
+                        response.body.accounts[0].should.have.property("account_id");
+                        response.body.accounts[0].should.have.property("account_name");
                         done();
                     });
             });
