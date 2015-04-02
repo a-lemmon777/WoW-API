@@ -31,7 +31,10 @@ exports.createCharacter = function(request, response) {
         if (err) { return handleError(response, err); }
         var newCharacter = new Character({
             name: request.body.name,
-            race: request.body.race
+            race: request.body.race,
+            class: request.body.class,
+            faction: request.body.faction,
+            level: request.body.level
         });
         account.characters.push(newCharacter);
         account.save(function(err) {

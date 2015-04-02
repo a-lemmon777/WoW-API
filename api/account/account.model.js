@@ -17,7 +17,7 @@ CharacterSchema.set('toObject', {
     transform: function(doc, ret, options) {
         ret.character_id = ret._id;
         // remove these fields before returning the result
-        //delete ret.__v;
+        //delete ret.__v; There doesn't seem to be a __v?
         delete ret._id;
     }
 });
