@@ -177,3 +177,36 @@ describe('GET /account/{acount_name}/characters', function() {
     });
 });
 
+describe('DELETE /account/{acount_name}', function() {
+    before(function(done) {
+        Account.remove({}, function() {
+            Account.create({account_name: "Betsy", link: "https://wow-api.herokuapp.com/account/Betsy"}, done);
+        });
+    });
+
+    after(function(done) {
+        Account.remove({}, done);
+    });
+
+    it('should delete the specified account', function(done) {
+        request(app)
+            .delete('/account/Betsy')
+            .expect(200)
+            .end(function (err, response) {
+                Account.findOne({account_name: "Betsy"}, function(err, account) {
+                    if (err) return done(err);
+                    account.should.equal(null);
+                    done();
+                });
+                //if (err) return done(err);
+                //response.body.should.have.property("account_id");
+                //response.body.account_name.should.equal("Betsy");
+                //response.body.characters.should.have.length(0);
+                //response.body.should.not.have.property("__v");
+                //response.body.should.not.have.property("_id");
+                ////response.body.should.not.have.property("link"); // Implement this
+                //done();
+            });
+    });
+});
+
