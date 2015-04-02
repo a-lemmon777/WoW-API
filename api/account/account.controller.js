@@ -11,10 +11,11 @@ exports.createAccount = function(request, response) {
     //console.log(request.protocol);
     //console.log(request.get('x-forwarded-proto'));
     //console.log(request.get('host'));
-    var appProtocol = request.get('x-forwarded-proto'); // usually http or https
-    var protocolText = appProtocol ? appProtocol + "://" : "";
-    console.log(protocolText + request.get('host'));
-    Account.create({account_name: request.body.name}, function(err, account) {
+    //var appProtocol = request.get('x-forwarded-proto'); // usually http or https
+    //var protocolText = appProtocol ? appProtocol + "://" : "";
+    //console.log(protocolText + request.get('host'));
+    var linkToAccount = getURL(request) + "/account/" + request.body.name;
+    Account.create({account_name: request.body.name, link: linkToAccount}, function(err, account) {
         if (err) { return handleError(response, err); }
         return response.status(200).json(account.toObject());
     });
@@ -57,6 +58,12 @@ exports.getAllCharacters = function(request, response) {
         return response.status(200).json(account.toObject());
     });
 };
+
+function getURL(request) {
+    var appProtocol = request.get('x-forwarded-proto'); // usually http or https
+    var protocolText = appProtocol ? appProtocol + "://" : ""; // empty in case of localhost
+    return protocolText + request.get('host');
+}
 
 function handleError(response, err) {
     return response.send(500, err);

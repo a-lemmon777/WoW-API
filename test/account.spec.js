@@ -30,8 +30,8 @@ describe('GET /account', function() {
     });
 
     it('should get an object with an array of length 2 if the database has 2 accounts', function(done) {
-        Account.create({account_name: "TeamTed"}, function() {
-            Account.create({account_name: "TeamTheresa"}, function() {
+        Account.create({account_name: "TeamTed", link: "https://wow-api.herokuapp.com/account/TeamTed"}, function() {
+            Account.create({account_name: "TeamTheresa", link: "https://wow-api.herokuapp.com/account/TeamTheresa"}, function() {
                 request(app)
                     .get('/account')
                     .expect(200)
@@ -42,8 +42,10 @@ describe('GET /account', function() {
                         response.body.accounts.should.have.length(2);
                         response.body.accounts[0].should.have.property("account_id");
                         response.body.accounts[0].should.have.property("account_name");
+                        response.body.accounts[0].should.have.property("link");
                         response.body.accounts[0].should.not.have.property("__v");
                         response.body.accounts[0].should.not.have.property("_id");
+                        //response.body.accounts[0].should.not.have.property("characters"); // Implement this
                         done();
                     });
             });
@@ -61,12 +63,15 @@ describe('POST /account', function() {
             .end(function (err, response) {
                 if (err) return done(err);
                 response.body.should.have.property("account_id");
+                response.body.should.have.property("link");
                 response.body.account_name.should.equal("testAccount");
+                //response.body.should.not.have.property("characters"); // Implement this
                 // Make sure it's in the database
                 Account.find({}, function(err, accounts) {
                     if (err) return done(err);
                     var account = accounts[0].toObject();
                     account.should.have.property("account_id");
+                    account.should.have.property("link");
                     account.account_name.should.equal("testAccount");
                     done();
                 });
@@ -77,7 +82,7 @@ describe('POST /account', function() {
 describe('POST /account/{acount_name}/characters', function() {
     beforeEach(function(done) {
         Account.remove({}, function() {
-            Account.create({account_name: "Rocky"}, done);
+            Account.create({account_name: "Rocky", link: "https://wow-api.herokuapp.com/account/Rocky"}, done);
         });
     });
 
@@ -118,7 +123,7 @@ describe('POST /account/{acount_name}/characters', function() {
 describe('GET /account/{acount_name}/characters', function() {
     beforeEach(function(done) {
         Account.remove({}, function() {
-            Account.create({account_name: "Betsy"}, done);
+            Account.create({account_name: "Betsy", link: "https://wow-api.herokuapp.com/account/Betsy"}, done);
         });
     });
 
@@ -138,6 +143,7 @@ describe('GET /account/{acount_name}/characters', function() {
                 response.body.characters.should.have.length(0);
                 response.body.should.not.have.property("__v");
                 response.body.should.not.have.property("_id");
+                //response.body.should.not.have.property("link"); // Implement this
                 done();
             });
     });

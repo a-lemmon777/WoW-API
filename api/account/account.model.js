@@ -24,7 +24,8 @@ CharacterSchema.set('toObject', {
 
 var AccountSchema = new Schema({
     account_name: String,
-    characters: [CharacterSchema]
+    characters: [CharacterSchema],
+    link: String
 });
 
 AccountSchema.set('toObject', {
