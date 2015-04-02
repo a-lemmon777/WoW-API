@@ -4,3 +4,21 @@ This is an API that simulates management of World of Warcraft characters over an
 
 ### Software needed
 The only thing you'll need to build and run this project is [Node.js](https://nodejs.org/)
+
+### Project setup
+In the project's root directory, install dependencies by entering:
+````
+npm install
+````
+
+### Running the program
+In the project's root directory, run the program by entering:
+````
+npm start
+````
+
+## Running the tests
+In the project's root directory, run the tests by entering:
+````
+npm test
+````
