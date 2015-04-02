@@ -15,9 +15,9 @@ exports.createAccount = function(request, response) {
 };
 
 exports.getAllAccounts = function(request, response) {
-    console.log(request.headers);
-    console.log(request.headers.host);
-    console.log(request.protocol);
+    console.log(request.get('x-forwarded-proto'));
+    console.log(request.get('host'));
+    //console.log(request.protocol);
     var returnBody = {accounts: []};
     Account.find({}, function (err, accounts) {
         if (err) { return handleError(response, err); }
