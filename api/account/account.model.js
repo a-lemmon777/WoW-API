@@ -8,16 +8,42 @@ var Schema = mongoose.Schema;
 var races = ["Orc", "Tauren", "Blood Elf", "Human", "Gnome", "Worgen"];
 var classes = ["Warrior", "Druid", "Death Knight", "Mage"];
 var factions = ["Horde", "Alliance"];
+var characteristics = [
+    {race: "Orc", faction: "Horde", class: ["Warrior", "Death Knight", "Mage"]},
+    {race: "Tauren", faction: "Horde", class: ["Warrior", "Druid", "Death Knight", "Mage"]},
+    {race: "Blood Elf", faction: "Horde", class: ["Druid", "Death Knight", "Mage"]},
+    {race: "Human", faction: "Alliance", class: ["Warrior", "Death Knight", "Mage"]},
+    {race: "Gnome", faction: "Alliance", class: ["Warrior", "Death Knight", "Mage"]},
+    {race: "Worgen", faction: "Alliance", class: ["Warrior", "Druid", "Death Knight", "Mage"]}
+];
+
 var characterErrorMessage = "Please enter a(n) {PATH} for your character.";
 var accountErrorMessage = "Please enter a(n) {PATH} for your account.";
 
 var CharacterSchema = new Schema({
     name: {type: String, required: characterErrorMessage},
-    race: {type: String, required: characterErrorMessage, enum: races},
+    race: {type: String, required: characterErrorMessage},
     class: {type: String, required: characterErrorMessage, enum: classes},
     faction: {type: String, required: characterErrorMessage, enum: factions},
     level: {type: Number, required: characterErrorMessage, min: 1, max: 85},
     active: {type: Boolean, required: characterErrorMessage, default: true}
+});
+
+CharacterSchema.pre('validate', true, function (next, done) {
+    next();
+    var found = false;
+    var index = 0;
+    while (!found && index < characteristics.length) {
+        if (this.race == characteristics[index].race) {
+            found = true;
+        }
+        index++;
+    }
+    if (!found) {
+        done(new Error("Please enter a valid race for your character."))
+    } else {
+        done();
+    }
 });
 
 CharacterSchema.set('toObject', {
