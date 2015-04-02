@@ -49,6 +49,14 @@ exports.createCharacter = function(request, response) {
     });
 };
 
+exports.deleteAccount = function(request, response) {
+    var account_name = request.params.account_name;
+    Account.findOneAndRemove({account_name: account_name}, function (err) {
+        if (err) { return handleError(response, err); }
+        return response.status(200).send();
+    });
+};
+
 exports.getAllCharacters = function(request, response) {
     var account_name = request.params.account_name;
     //var returnBody = {accounts: []};

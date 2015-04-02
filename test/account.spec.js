@@ -195,17 +195,9 @@ describe('DELETE /account/{acount_name}', function() {
             .end(function (err, response) {
                 Account.findOne({account_name: "Betsy"}, function(err, account) {
                     if (err) return done(err);
-                    account.should.equal(null);
+                    should(account).equal(null);
                     done();
                 });
-                //if (err) return done(err);
-                //response.body.should.have.property("account_id");
-                //response.body.account_name.should.equal("Betsy");
-                //response.body.characters.should.have.length(0);
-                //response.body.should.not.have.property("__v");
-                //response.body.should.not.have.property("_id");
-                ////response.body.should.not.have.property("link"); // Implement this
-                //done();
             });
     });
 });
