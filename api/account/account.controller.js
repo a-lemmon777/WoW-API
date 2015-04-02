@@ -8,11 +8,9 @@ var Account = models.Account;
 var Character = models.Character;
 
 exports.createAccount = function(request, response) {
-    var newAccount = new Account();
-    newAccount.account_name = request.body.name;
-    newAccount.save(function(err, account) {
+    Account.create({account_name: request.body.name}, function(err, account) {
         if (err) { return handleError(response, err); }
-        return response.status(200).json(newAccount.toObject());
+        return response.status(200).json(account.toObject());
     });
 };
 
