@@ -12,7 +12,6 @@ exports.createAccount = function(request, response) {
     newAccount.account_name = request.body.name;
     newAccount.save(function(err, account) {
         if (err) { return handleError(response, err); }
-        //console.log("Added a new account!");
         return response.status(200).json(newAccount.toObject());
     });
 };
@@ -22,7 +21,6 @@ exports.getAllAccounts = function(request, response) {
     Account.find().exec(function (err, accounts) {
         if (err) { return handleError(response, err); }
         returnBody.accounts = accounts.map(Account.toClient);
-        //returnBody.accounts = accounts;
         return response.status(200).json(returnBody);
     });
 };
@@ -31,9 +29,10 @@ exports.createCharacter = function(request, response) {
     var account_name = request.params.account_name;
     Account.findOne({account_name: account_name}, function(err, account) {
         if (err) { return handleError(response, err); }
-        var newCharacter = new Character();
-        newCharacter.name = request.body.name;
-        newCharacter.race = request.body.race;
+        var newCharacter = new Character({
+            name: request.body.name,
+            race: request.body.race
+        });
         account.characters.push(newCharacter);
         account.save(function(err) {
             if (err) { return handleError(response, err); }
