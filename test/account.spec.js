@@ -274,27 +274,28 @@ describe('DELETE /account/{acount_name}/characters/{character_name}', function()
 });
 
 describe('PUT /account/{acount_name}/characters/{character_name}', function() {
-    beforeEach(function(done) {
-        Account.remove({}, done);
-        });
-    });
-
-    after(function(done) {
+    beforeEach(function (done) {
         Account.remove({}, done);
     });
 
-    it('should mark the specified character as active', function(done) {
+    after(function (done) {
+        Account.remove({}, done);
+    });
+
+    it('should mark the specified character as active', function (done) {
         Account.create({
             account_name: "Betsy",
             link: "https://wow-api.herokuapp.com/account/Betsy",
             characters: [{name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2, active: false}]
-        }, function(err) {
-            if (err) { return done(err); }
+        }, function (err) {
+            if (err) {
+                return done(err);
+            }
             request(app)
                 .put('/account/Betsy/characters/Leeroy')
                 .expect(200)
                 .end(function (err, response) {
-                    Account.findOne({account_name: "Betsy"}, function(err, account) {
+                    Account.findOne({account_name: "Betsy"}, function (err, account) {
                         if (err) return done(err);
                         var character = account.characters[0].toObject();
                         character.should.have.property('active');
@@ -303,4 +304,26 @@ describe('PUT /account/{acount_name}/characters/{character_name}', function() {
                     });
                 });
         });
+    });
+
+    it('should throw an error if account not found', function(done) {
+        request(app)
+            .put('/account/Betsy/characters/Leeroy')
+            .expect(500, done);
+    });
+
+    it('should throw an error if character not found', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: []
+        }, function(err) {
+            if (err) { return done(err); }
+
+            request(app)
+                .put('/account/Betsy/characters/Leeroy')
+                .expect(500, done);
+
+        });
+    });
 });

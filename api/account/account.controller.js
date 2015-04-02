@@ -82,7 +82,9 @@ exports.unDeleteCharacter = function(request, response) {
     var character_name = request.params.character_name;
     Account.findOne({account_name: account_name}, function (err, account) {
         if (err) { return handleError(response, err); }
+        if (account == null) { return handleError(response, new Error("Account not found."))}
         var character = account.getCharacter(character_name);
+        if (character == null) { return handleError(response, new Error("Character not found."))}
         character.active = true;
         account.save(function (err) {
             if (err) { return handleError(response, err); }
