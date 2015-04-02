@@ -6,12 +6,12 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CharacterSchema = new Schema({
-    name: String,
-    race: String,
-    class: String,
-    faction: String,
-    level: Number,
-    active: {type: Boolean, default: true}
+    name: {type: String, required: true},
+    race: {type: String, required: true},
+    class: {type: String, required: true},
+    faction: {type: String, required: true},
+    level: {type: Number, required: true},
+    active: {type: Boolean, required: true, default: true}
 });
 
 CharacterSchema.set('toObject', {

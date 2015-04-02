@@ -263,3 +263,53 @@ describe('PUT /account/{acount_name}/characters/{character_name}', function() {
             });
     });
 });
+
+describe('Validation for character creation', function() {
+    before(function(done) {
+        Account.remove({}, function() {
+            Account.create({
+                account_name: "Betsy",
+                link: "https://wow-api.herokuapp.com/account/Betsy"
+            }, done);
+        });
+    });
+
+    after(function(done) {
+        Account.remove({}, done);
+    });
+
+    it('should reject not providing a name', function(done) {
+        request(app)
+            .post('/account/Betsy/characters')
+            .send({race: "Orc", class: "Warrior", faction: "Horde", level: 45})
+            .expect(500, done);
+    });
+
+    it('should reject not providing a race', function(done) {
+        request(app)
+            .post('/account/Betsy/characters')
+            .send({name: "Blackhand", class: "Warrior", faction: "Horde", level: 45})
+            .expect(500, done);
+    });
+
+    it('should reject not providing a class', function(done) {
+        request(app)
+            .post('/account/Betsy/characters')
+            .send({name: "Blackhand", race: "Orc", faction: "Horde", level: 45})
+            .expect(500, done);
+    });
+
+    it('should reject not providing a faction', function(done) {
+        request(app)
+            .post('/account/Betsy/characters')
+            .send({name: "Blackhand", race: "Orc", class: "Warrior", level: 45})
+            .expect(500, done);
+    });
+
+    it('should reject not providing a level', function(done) {
+        request(app)
+            .post('/account/Betsy/characters')
+            .send({name: "Blackhand", race: "Orc", class: "Warrior", faction: "Horde"})
+            .expect(500, done);
+    });
+});

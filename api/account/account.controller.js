@@ -95,5 +95,5 @@ function getURL(request) {
 }
 
 function handleError(response, err) {
-    return response.send(500, err);
+    return response.status(500).send(err);
 }
