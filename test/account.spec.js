@@ -134,7 +134,10 @@ describe('GET /account/{acount_name}/characters', function() {
             .end(function (err, response) {
                 if (err) return done(err);
                 response.body.should.have.property("account_id");
-                //response.body.accounts.should.have.length(0);
+                response.body.account_name.should.equal("Betsy");
+                response.body.characters.should.have.length(0);
+                response.body.should.not.have.property("__v");
+                response.body.should.not.have.property("_id");
                 done();
             });
     });
