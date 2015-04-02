@@ -16,6 +16,7 @@ In the project's root directory, run the program by entering:
 ````
 npm start
 ````
+Don't worry if you get a message saying a c++ bson extension didn't load, it's not needed since there is a javascript version that it uses automatically.
 
 ## Running the tests
 In the project's root directory, run the tests by entering:
