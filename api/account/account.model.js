@@ -87,8 +87,33 @@ CharacterSchema.set('toObject', {
 
 var AccountSchema = new Schema({
     account_name: {type: String, required: accountErrorMessage},
-    characters: [CharacterSchema],
+    characters: {type: [CharacterSchema], validate: hordeVsAllianceValidator},
     link: String
+});
+
+function hordeVsAllianceValidator(newCharacter) {
+    // At least one must be 0
+    return (this.allianceCount == 0 || this.hordeCount == 0);
+}
+
+AccountSchema.virtual('allianceCount').get(function () {
+    var count = 0;
+    for (var i = 0; i < this.characters.length; i++) {
+        if (this.characters[i].faction == "Alliance") {
+            count++;
+        }
+    }
+    return count;
+});
+
+AccountSchema.virtual('hordeCount').get(function () {
+    var count = 0;
+    for (var i = 0; i < this.characters.length; i++) {
+        if (this.characters[i].faction == "Horde") {
+            count++;
+        }
+    }
+    return count;
 });
 
 AccountSchema.set('toObject', {
@@ -112,7 +137,6 @@ AccountSchema.methods.getCharacter = function(character_name) {
     }
     return null;
 };
-
 
 var Account = mongoose.model('Account', AccountSchema);
 var Character = mongoose.model('Character', CharacterSchema);

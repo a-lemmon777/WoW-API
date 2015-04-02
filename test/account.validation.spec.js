@@ -129,3 +129,27 @@ describe('Validation for character creation', function() {
             .expect(200, done);
     });
 });
+
+describe('Validation for Horde vs Alliance', function() {
+    beforeEach(function (done) {
+        Account.remove({}, done);
+    });
+
+    after(function (done) {
+        Account.remove({}, done);
+    });
+
+    it('should reject alliance character if affiliated with Horde', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: [{name: "Valeera", race: "Blood Elf", class: "Death Knight", faction: "Horde", level: 45}]
+        }, function(err) {
+            if (err) { return done(err); }
+            request(app)
+                .post('/account/Betsy/characters')
+                .send({name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2})
+                .expect(500, done);
+        });
+    });
+});
