@@ -115,3 +115,49 @@ describe('POST /account/{acount_name}/characters', function() {
     });
 });
 
+describe('GET /account/{acount_name}/characters', function() {
+    beforeEach(function(done) {
+        Account.remove({}, function() {
+            Account.create({account_name: "Betsy"}, done);
+        });
+    });
+
+    after(function(done) {
+        Account.remove({}, done);
+    });
+
+    it('should get an account with an empty array of characters if no characters have been added', function(done) {
+        request(app)
+            .get('/account/Betsy/characters')
+            .expect(200)
+            .expect('Content-Type', /json/)
+            .end(function (err, response) {
+                if (err) return done(err);
+                response.body.should.have.property("account_id");
+                //response.body.accounts.should.have.length(0);
+                done();
+            });
+    });
+
+    //it('should get an object with an array of length 2 if the database has 2 accounts', function(done) {
+    //    Account.create({account_name: "TeamTed"}, function() {
+    //        Account.create({account_name: "TeamTheresa"}, function() {
+    //            request(app)
+    //                .get('/account')
+    //                .expect(200)
+    //                .expect('Content-Type', /json/)
+    //                .end(function (err, response) {
+    //                    if (err) return done(err);
+    //                    response.body.should.have.property("accounts");
+    //                    response.body.accounts.should.have.length(2);
+    //                    response.body.accounts[0].should.have.property("account_id");
+    //                    response.body.accounts[0].should.have.property("account_name");
+    //                    response.body.accounts[0].should.not.have.property("__v");
+    //                    response.body.accounts[0].should.not.have.property("_id");
+    //                    done();
+    //                });
+    //        });
+    //    });
+    //});
+});
+
