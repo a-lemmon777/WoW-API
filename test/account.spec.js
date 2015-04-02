@@ -81,14 +81,14 @@ describe('POST /account/{acount_name}/characters', function() {
     it('should be able to add another character', function(done) {
         request(app)
             .post('/account/Rocky/characters')
-            .send({name: "Blackhand"})//, race: "Orc", class: "Warrior", faction: "Horde", level: 45})
+            .send({name: "Blackhand", race: "Orc"})//, race: "Orc", class: "Warrior", faction: "Horde", level: 45})
             .expect(200)
             .expect('Content-Type', /json/)
             .end(function (err, response) {
                 if (err) return done(err);
-                //response.body.should.have.property("character_id");
+                response.body.should.have.property("character_id");
                 response.body.name.should.equal("Blackhand");
-                //response.body.race.should.equal("Orc");
+                response.body.race.should.equal("Orc");
                 //response.body.class.should.equal("Warrior");
                 //response.body.faction.should.equal("Horde");
                 //response.body.level.should.equal(45);

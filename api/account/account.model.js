@@ -6,7 +6,20 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var CharacterSchema = new Schema({
-    name: String
+    name: String,
+    race: String,
+    class: String,
+    faction: String,
+    level: Number
+});
+
+CharacterSchema.set('toObject', {
+    transform: function(doc, ret, options) {
+        ret.character_id = ret._id;
+        // remove these fields before returning the result
+        //delete ret.__v;
+        delete ret._id;
+    }
 });
 
 var AccountSchema = new Schema({

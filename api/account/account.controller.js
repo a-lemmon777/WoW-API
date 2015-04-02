@@ -33,21 +33,13 @@ exports.createCharacter = function(request, response) {
         if (err) { return handleError(response, err); }
         var newCharacter = new Character();
         newCharacter.name = request.body.name;
+        newCharacter.race = request.body.race;
         account.characters.push(newCharacter);
         account.save(function(err) {
             if (err) { return handleError(response, err); }
-            return response.status(200).json(newCharacter);
+            return response.status(200).json(newCharacter.toObject());
         });
     });
-    //var newCharacter = new Character();
-    //return response.status(200).json({message: request.params.account_name});
-    //var newAccount = new Account();
-    //newAccount.account_name = request.body.name;
-    //newAccount.save(function(err, account) {
-    //    if (err) { return handleError(response, err); }
-    //    //console.log("Added a new account!");
-    //    return response.status(200).json(newAccount.toObject());
-    //});
 };
 
 function handleError(response, err) {
