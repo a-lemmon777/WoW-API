@@ -5,12 +5,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var races = ["Orc", "Tauren", "Blood Elf", "Human", "Gnome", "Worgen"];
+var classes = ["Warrior", "Druid", "Death Knight", "Mage"];
+var factions = ["Horde", "Alliance"];
+
 var CharacterSchema = new Schema({
     name: {type: String, required: true},
-    race: {type: String, required: true},
-    class: {type: String, required: true},
-    faction: {type: String, required: true},
-    level: {type: Number, required: true},
+    race: {type: String, required: true, enum: races},
+    class: {type: String, required: true, enum: classes},
+    faction: {type: String, required: true, enum: factions},
+    level: {type: Number, required: true, min: 1, max: 85},
     active: {type: Boolean, required: true, default: true}
 });
 
