@@ -7,6 +7,29 @@ var request = require('supertest');
 var models = require('../api/account/account.model');
 var Account = models.Account;
 
+describe('Validation for account creation', function() {
+    before(function (done) {
+        Account.remove({}, done);
+    });
+
+    after(function (done) {
+        Account.remove({}, done);
+    });
+
+    it('should reject not providing a name', function(done) {
+        request(app)
+            .post('/account')
+            .send({})
+            .expect(500, done);
+    });
+
+    it('should reject providing an empty string for a name', function(done) {
+        request(app)
+            .post('/account')
+            .send({name: ""})
+            .expect(500, done);
+    });
+});
 
 describe('Validation for character creation', function() {
     before(function(done) {

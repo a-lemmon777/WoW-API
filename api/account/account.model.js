@@ -8,14 +8,16 @@ var Schema = mongoose.Schema;
 var races = ["Orc", "Tauren", "Blood Elf", "Human", "Gnome", "Worgen"];
 var classes = ["Warrior", "Druid", "Death Knight", "Mage"];
 var factions = ["Horde", "Alliance"];
+var characterErrorMessage = "Please enter a {PATH} for your character.";
+var accountErrorMessage = "Please enter a {PATH} for your account.";
 
 var CharacterSchema = new Schema({
-    name: {type: String, required: true},
-    race: {type: String, required: true, enum: races},
-    class: {type: String, required: true, enum: classes},
-    faction: {type: String, required: true, enum: factions},
-    level: {type: Number, required: true, min: 1, max: 85},
-    active: {type: Boolean, required: true, default: true}
+    name: {type: String, required: characterErrorMessage},
+    race: {type: String, required: characterErrorMessage, enum: races},
+    class: {type: String, required: characterErrorMessage, enum: classes},
+    faction: {type: String, required: characterErrorMessage, enum: factions},
+    level: {type: Number, required: characterErrorMessage, min: 1, max: 85},
+    active: {type: Boolean, required: characterErrorMessage, default: true}
 });
 
 CharacterSchema.set('toObject', {
@@ -28,7 +30,7 @@ CharacterSchema.set('toObject', {
 });
 
 var AccountSchema = new Schema({
-    account_name: String,
+    account_name: {type: String, required: accountErrorMessage},
     characters: [CharacterSchema],
     link: String
 });
