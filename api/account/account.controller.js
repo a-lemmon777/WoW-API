@@ -5,6 +5,7 @@
 
 var models = require('./account.model');
 var Account = models.Account;
+var Character = models.Character;
 
 exports.createAccount = function(request, response) {
     var newAccount = new Account();
@@ -30,11 +31,12 @@ exports.createCharacter = function(request, response) {
     var account_name = request.params.account_name;
     Account.findOne({account_name: account_name}, function(err, account) {
         if (err) { return handleError(response, err); }
-        //var newCharacter = new Character();
-        account.characters.push({name: "Blackhand"});
+        var newCharacter = new Character();
+        newCharacter.name = request.body.name;
+        account.characters.push(newCharacter);
         account.save(function(err) {
             if (err) { return handleError(response, err); }
-            return response.status(200).json({name: "Blackhand"});
+            return response.status(200).json(newCharacter);
         });
     });
     //var newCharacter = new Character();
