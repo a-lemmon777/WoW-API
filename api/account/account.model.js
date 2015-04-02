@@ -8,8 +8,8 @@ var Schema = mongoose.Schema;
 var races = ["Orc", "Tauren", "Blood Elf", "Human", "Gnome", "Worgen"];
 var classes = ["Warrior", "Druid", "Death Knight", "Mage"];
 var factions = ["Horde", "Alliance"];
-var characterErrorMessage = "Please enter a {PATH} for your character.";
-var accountErrorMessage = "Please enter a {PATH} for your account.";
+var characterErrorMessage = "Please enter a(n) {PATH} for your character.";
+var accountErrorMessage = "Please enter a(n) {PATH} for your account.";
 
 var CharacterSchema = new Schema({
     name: {type: String, required: characterErrorMessage},
