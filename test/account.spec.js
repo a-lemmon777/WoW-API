@@ -60,9 +60,16 @@ describe('POST /account', function() {
             .expect('Content-Type', /json/)
             .end(function (err, response) {
                 if (err) return done(err);
-                response.body.should.have.property('account_id');
+                response.body.should.have.property("account_id");
                 response.body.account_name.should.equal("testAccount");
-                done();
+                // Make sure it's in the database
+                Account.find({}, function(err, accounts) {
+                    if (err) return done(err);
+                    var account = accounts[0].toObject();
+                    account.should.have.property("account_id");
+                    account.account_name.should.equal("testAccount");
+                    done();
+                });
             });
     });
 });
@@ -92,7 +99,18 @@ describe('POST /account/{acount_name}/characters', function() {
                 response.body.class.should.equal("Warrior");
                 response.body.faction.should.equal("Horde");
                 response.body.level.should.equal(45);
-                done();
+                // Make sure it's in the database
+                Account.findOne({account_name: "Rocky"}, function(err, account) {
+                    if (err) return done(err);
+                    var character = account.characters[0].toObject();
+                    character.should.have.property("character_id");
+                    character.name.should.equal("Blackhand");
+                    character.race.should.equal("Orc");
+                    character.class.should.equal("Warrior");
+                    character.faction.should.equal("Horde");
+                    character.level.should.equal(45);
+                    done();
+                });
             });
     });
 });
