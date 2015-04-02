@@ -74,6 +74,20 @@ exports.deleteCharacter = function(request, response) {
     });
 };
 
+exports.unDeleteCharacter = function(request, response) {
+    var account_name = request.params.account_name;
+    var character_name = request.params.character_name;
+    Account.findOne({account_name: account_name}, function (err, account) {
+        if (err) { return handleError(response, err); }
+        var character = account.getCharacter(character_name);
+        character.active = true;
+        account.save(function (err) {
+            if (err) { return handleError(response, err); }
+            return response.status(200).send();
+        });
+    });
+};
+
 function getURL(request) {
     var appProtocol = request.get('x-forwarded-proto'); // usually http or https
     var protocolText = appProtocol ? appProtocol + "://" : ""; // empty in case of localhost

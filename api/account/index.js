@@ -14,5 +14,6 @@ router.post('/:account_name/characters', controller.createCharacter);
 router.get('/:account_name/characters', controller.getAllCharacters);
 router.delete('/:account_name/', controller.deleteAccount);
 router.delete('/:account_name/characters/:character_name', controller.deleteCharacter);
+router.put('/:account_name/characters/:character_name', controller.unDeleteCharacter);
 
 module.exports = router;
