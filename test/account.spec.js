@@ -142,25 +142,32 @@ describe('GET /account/{acount_name}/characters', function() {
             });
     });
 
-    //it('should get an object with an array of length 2 if the database has 2 accounts', function(done) {
-    //    Account.create({account_name: "TeamTed"}, function() {
-    //        Account.create({account_name: "TeamTheresa"}, function() {
-    //            request(app)
-    //                .get('/account')
-    //                .expect(200)
-    //                .expect('Content-Type', /json/)
-    //                .end(function (err, response) {
-    //                    if (err) return done(err);
-    //                    response.body.should.have.property("accounts");
-    //                    response.body.accounts.should.have.length(2);
-    //                    response.body.accounts[0].should.have.property("account_id");
-    //                    response.body.accounts[0].should.have.property("account_name");
-    //                    response.body.accounts[0].should.not.have.property("__v");
-    //                    response.body.accounts[0].should.not.have.property("_id");
-    //                    done();
-    //                });
-    //        });
-    //    });
-    //});
+    it('should get an account with an array of length 2 if the account has 2 characters', function(done) {
+        Account.findOne({account_name: "Betsy"}, function(err, account) {
+            if (err) return done(err);
+            account.characters.push({name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2});
+            account.characters.push({name: "Jenkins", race: "Human", class: "Death Knight", faction: "Alliance", level: 22});
+            account.save(function() {
+                request(app)
+                    .get('/account/Betsy/characters')
+                    .expect(200)
+                    .expect('Content-Type', /json/)
+                    .end(function (err, response) {
+                        if (err) return done(err);
+                        response.body.should.have.property("account_id");
+                        response.body.account_name.should.equal("Betsy");
+                        response.body.characters.should.have.length(2);
+                        response.body.characters[0].should.have.property("name");
+                        response.body.characters[0].should.have.property("race");
+                        response.body.characters[0].should.have.property("class");
+                        response.body.characters[0].should.have.property("faction");
+                        response.body.characters[0].should.have.property("level");
+                        response.body.characters[0].should.not.have.property("__v");
+                        response.body.characters[0].should.not.have.property("_id");
+                        done();
+                    });
+            })
+        });
+    });
 });
 
