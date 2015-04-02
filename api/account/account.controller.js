@@ -42,6 +42,16 @@ exports.createCharacter = function(request, response) {
     });
 };
 
+exports.getAllCharacters = function(request, response) {
+    var account_name = request.params.account_name;
+    //var returnBody = {accounts: []};
+    Account.findOne({account_name: account_name}, function (err, account) {
+        if (err) { return handleError(response, err); }
+        //returnBody.accounts = accounts.map(Account.toClient); // Changes all accounts to a client-friendly view
+        return response.status(200).json(account.toObject());
+    });
+};
+
 function handleError(response, err) {
     return response.send(500, err);
 }
