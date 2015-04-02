@@ -16,9 +16,9 @@ exports.createAccount = function(request, response) {
 
 exports.getAllAccounts = function(request, response) {
     var returnBody = {accounts: []};
-    Account.find().exec(function (err, accounts) {
+    Account.find({}, function (err, accounts) {
         if (err) { return handleError(response, err); }
-        returnBody.accounts = accounts.map(Account.toClient);
+        returnBody.accounts = accounts.map(Account.toClient); // Changes all accounts to a client-friendly view
         return response.status(200).json(returnBody);
     });
 };
