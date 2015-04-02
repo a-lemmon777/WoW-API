@@ -5,9 +5,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var races = ["Orc", "Tauren", "Blood Elf", "Human", "Gnome", "Worgen"];
-var classes = ["Warrior", "Druid", "Death Knight", "Mage"];
-var factions = ["Horde", "Alliance"];
 var characteristics = [
     {race: "Orc", faction: "Horde", class: ["Warrior", "Death Knight", "Mage"]},
     {race: "Tauren", faction: "Horde", class: ["Warrior", "Druid", "Death Knight", "Mage"]},
@@ -23,8 +20,8 @@ var accountErrorMessage = "Please enter a(n) {PATH} for your account.";
 var CharacterSchema = new Schema({
     name: {type: String, required: characterErrorMessage},
     race: {type: String, required: characterErrorMessage},
-    class: {type: String, required: characterErrorMessage, enum: classes},
-    faction: {type: String, required: characterErrorMessage, enum: factions},
+    class: {type: String, required: characterErrorMessage},
+    faction: {type: String, required: characterErrorMessage},
     level: {type: Number, required: characterErrorMessage, min: 1, max: 85},
     active: {type: Boolean, required: characterErrorMessage, default: true}
 });
@@ -47,9 +44,35 @@ CharacterSchema.pre('validate', true, function (next, done) {
     next();
     var raceInfo = getRaceInfo(this.race);
     if (raceInfo == null) {
-        done(new Error("Please enter a valid race for your character."))
+        done(new Error("Please enter a valid race for your character."));
     } else {
-        done();
+        var found = false;
+        var index = 0;
+        while (!found && index < raceInfo.class.length) {
+            if (this.class == raceInfo.class[index]) {
+                found = true;
+            }
+            index++;
+        }
+        if (!found) {
+            done(new Error("Please enter a valid class for your character."));
+        } else {
+            done();
+        }
+    }
+});
+
+CharacterSchema.pre('validate', true, function (next, done) {
+    next();
+    var raceInfo = getRaceInfo(this.race);
+    if (raceInfo == null) {
+        done(new Error("Please enter a valid race for your character."));
+    } else {
+        if (this.faction != raceInfo.faction) {
+            done(new Error("Please enter a valid faction for your character."));
+        } else {
+            done();
+        }
     }
 });
 
