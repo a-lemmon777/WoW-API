@@ -29,17 +29,24 @@ var CharacterSchema = new Schema({
     active: {type: Boolean, required: characterErrorMessage, default: true}
 });
 
-CharacterSchema.pre('validate', true, function (next, done) {
-    next();
+function getRaceInfo(race) {
+    var toReturn = null;
     var found = false;
     var index = 0;
     while (!found && index < characteristics.length) {
-        if (this.race == characteristics[index].race) {
+        if (race == characteristics[index].race) {
             found = true;
+            toReturn = characteristics[index];
         }
         index++;
     }
-    if (!found) {
+    return toReturn;
+}
+
+CharacterSchema.pre('validate', true, function (next, done) {
+    next();
+    var raceInfo = getRaceInfo(this.race);
+    if (raceInfo == null) {
         done(new Error("Please enter a valid race for your character."))
     } else {
         done();
