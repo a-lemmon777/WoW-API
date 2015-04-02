@@ -10,7 +10,8 @@ var CharacterSchema = new Schema({
     race: String,
     class: String,
     faction: String,
-    level: Number
+    level: Number,
+    active: {type: Boolean, default: true}
 });
 
 CharacterSchema.set('toObject', {
@@ -39,6 +40,15 @@ AccountSchema.set('toObject', {
 
 AccountSchema.statics.toClient = function(account) {
     return account.toObject();
+};
+
+AccountSchema.methods.getCharacter = function(character_name) {
+    for(var i = 0; i < this.characters.length; i++) {
+        if (this.characters[i].name == character_name) {
+            return this.characters[i];
+        }
+    }
+    return null;
 };
 
 
