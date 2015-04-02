@@ -118,6 +118,15 @@ describe('POST /account/{acount_name}/characters', function() {
                 });
             });
     });
+
+    it('should throw an error if account not found', function(done) {
+        Account.remove({}, function() {
+            request(app)
+                .post('/account/Rocky/characters')
+                .send({name: "Blackhand", race: "Orc", class: "Warrior", faction: "Horde", level: 45})
+                .expect(500, done);
+        });
+    });
 });
 
 describe('GET /account/{acount_name}/characters', function() {
@@ -175,6 +184,14 @@ describe('GET /account/{acount_name}/characters', function() {
             })
         });
     });
+
+    it('should throw an error if account not found', function(done) {
+        Account.remove({}, function() {
+            request(app)
+                .get('/account/Betsy/characters')
+                .expect(500, done);
+        });
+    });
 });
 
 describe('DELETE /account/{acount_name}', function() {
@@ -203,14 +220,8 @@ describe('DELETE /account/{acount_name}', function() {
 });
 
 describe('DELETE /account/{acount_name}/characters/{character_name}', function() {
-    before(function(done) {
-        Account.remove({}, function() {
-            Account.create({
-                account_name: "Betsy",
-                link: "https://wow-api.herokuapp.com/account/Betsy",
-                characters: [{name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2}]
-                }, done);
-        });
+    beforeEach(function(done) {
+        Account.remove({}, done);
     });
 
     after(function(done) {
@@ -218,18 +229,47 @@ describe('DELETE /account/{acount_name}/characters/{character_name}', function()
     });
 
     it('should mark the specified character as inactive', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: [{name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2}]
+        }, function(err) {
+            if (err) { return done(err); }
+            request(app)
+                .delete('/account/Betsy/characters/Leeroy')
+                .expect(200)
+                .end(function (err, response) {
+                    Account.findOne({account_name: "Betsy"}, function(err, account) {
+                        if (err) return done(err);
+                        var character = account.characters[0].toObject();
+                        character.should.have.property('active');
+                        character.active.should.equal(false);
+                        done();
+                    });
+                });
+        });
+
+    });
+
+    it('should throw an error if account not found', function(done) {
         request(app)
             .delete('/account/Betsy/characters/Leeroy')
-            .expect(200)
-            .end(function (err, response) {
-                Account.findOne({account_name: "Betsy"}, function(err, account) {
-                    if (err) return done(err);
-                    var character = account.characters[0].toObject();
-                    character.should.have.property('active');
-                    character.active.should.equal(false);
-                    done();
-                });
-            });
+            .expect(500, done);
+    });
+
+    it('should throw an error if character not found', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: []
+        }, function(err) {
+            if (err) { return done(err); }
+
+            request(app)
+                .delete('/account/Betsy/characters/Leeroy')
+                .expect(500, done);
+
+        });
     });
 });
 

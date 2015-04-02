@@ -28,6 +28,7 @@ exports.createCharacter = function(request, response) {
     var account_name = request.params.account_name;
     Account.findOne({account_name: account_name}, function(err, account) {
         if (err) { return handleError(response, err); }
+        if (account == null) { return handleError(response, new Error("Account not found."))}
         var newCharacter = new Character({
             name: request.body.name,
             race: request.body.race,
@@ -53,9 +54,9 @@ exports.deleteAccount = function(request, response) {
 
 exports.getAllCharacters = function(request, response) {
     var account_name = request.params.account_name;
-    //var returnBody = {accounts: []};
     Account.findOne({account_name: account_name}, function (err, account) {
         if (err) { return handleError(response, err); }
+        if (account == null) { return handleError(response, new Error("Account not found."))}
         return response.status(200).json(account.toObject());
     });
 };
@@ -65,7 +66,9 @@ exports.deleteCharacter = function(request, response) {
     var character_name = request.params.character_name;
     Account.findOne({account_name: account_name}, function (err, account) {
         if (err) { return handleError(response, err); }
+        if (account == null) { return handleError(response, new Error("Account not found."))}
         var character = account.getCharacter(character_name);
+        if (character == null) { return handleError(response, new Error("Character not found."))}
         character.active = false;
         account.save(function (err) {
             if (err) { return handleError(response, err); }
