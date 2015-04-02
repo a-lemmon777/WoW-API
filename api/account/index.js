@@ -10,5 +10,6 @@ var router = express.Router();
 // Routing for {my-service-url}/account
 router.get('/', controller.getAllAccounts);
 router.post('/', controller.createAccount);
+router.post('/:account_name/characters', controller.createCharacter);
 
 module.exports = router;

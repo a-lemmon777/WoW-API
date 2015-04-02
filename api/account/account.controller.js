@@ -3,7 +3,8 @@
  */
 'use strict';
 
-var Account = require('./account.model');
+var models = require('./account.model');
+var Account = models.Account;
 
 exports.createAccount = function(request, response) {
     var newAccount = new Account();
@@ -23,6 +24,28 @@ exports.getAllAccounts = function(request, response) {
         //returnBody.accounts = accounts;
         return response.status(200).json(returnBody);
     });
+};
+
+exports.createCharacter = function(request, response) {
+    var account_name = request.params.account_name;
+    Account.findOne({account_name: account_name}, function(err, account) {
+        if (err) { return handleError(response, err); }
+        //var newCharacter = new Character();
+        account.characters.push({name: "Blackhand"});
+        account.save(function(err) {
+            if (err) { return handleError(response, err); }
+            return response.status(200).json({name: "Blackhand"});
+        });
+    });
+    //var newCharacter = new Character();
+    //return response.status(200).json({message: request.params.account_name});
+    //var newAccount = new Account();
+    //newAccount.account_name = request.body.name;
+    //newAccount.save(function(err, account) {
+    //    if (err) { return handleError(response, err); }
+    //    //console.log("Added a new account!");
+    //    return response.status(200).json(newAccount.toObject());
+    //});
 };
 
 function handleError(response, err) {

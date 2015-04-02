@@ -5,9 +5,13 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var CharacterSchema = new Schema({
+    name: String
+});
+
 var AccountSchema = new Schema({
-    account_name: String//,
-    //"characters":
+    account_name: String,
+    characters: [CharacterSchema]
 });
 
 AccountSchema.set('toObject', {
@@ -23,4 +27,10 @@ AccountSchema.statics.toClient = function(account) {
     return account.toObject();
 };
 
-module.exports = mongoose.model('Account', AccountSchema);
+
+var Account = mongoose.model('Account', AccountSchema);
+var Character = mongoose.model('Character', CharacterSchema);
+module.exports = {
+    Account: Account,
+    Character: Character
+};
