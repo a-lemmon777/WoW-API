@@ -8,9 +8,12 @@ var Account = models.Account;
 var Character = models.Character;
 
 exports.createAccount = function(request, response) {
-    console.log(request.protocol);
-    console.log(request.get('x-forwarded-proto'));
-    console.log(request.get('host'));
+    //console.log(request.protocol);
+    //console.log(request.get('x-forwarded-proto'));
+    //console.log(request.get('host'));
+    var appProtocol = request.get('x-forwarded-proto'); // usually http or https
+    var protocolText = appProtocol ? appProtocol + "://" : "";
+    console.log(protocolText + request.get('host'));
     Account.create({account_name: request.body.name}, function(err, account) {
         if (err) { return handleError(response, err); }
         return response.status(200).json(account.toObject());
