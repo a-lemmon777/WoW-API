@@ -99,7 +99,7 @@ function hordeVsAllianceValidator(newCharacter) {
 AccountSchema.virtual('allianceCount').get(function () {
     var count = 0;
     for (var i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].faction == "Alliance") {
+        if (this.characters[i].faction == "Alliance" && this.characters[i].active) {
             count++;
         }
     }
@@ -109,7 +109,7 @@ AccountSchema.virtual('allianceCount').get(function () {
 AccountSchema.virtual('hordeCount').get(function () {
     var count = 0;
     for (var i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].faction == "Horde") {
+        if (this.characters[i].faction == "Horde" && this.characters[i].active) {
             count++;
         }
     }

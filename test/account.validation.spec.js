@@ -139,7 +139,7 @@ describe('Validation for Horde vs Alliance', function() {
         Account.remove({}, done);
     });
 
-    it('should reject alliance character if affiliated with Horde', function(done) {
+    it('should reject Alliance character if affiliated with Horde', function(done) {
         Account.create({
             account_name: "Betsy",
             link: "https://wow-api.herokuapp.com/account/Betsy",
@@ -150,6 +150,48 @@ describe('Validation for Horde vs Alliance', function() {
                 .post('/account/Betsy/characters')
                 .send({name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2})
                 .expect(500, done);
+        });
+    });
+
+    it('should reject Horde character if affiliated with Alliance', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: [{name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2}]
+        }, function(err) {
+            if (err) { return done(err); }
+            request(app)
+                .post('/account/Betsy/characters')
+                .send({name: "Valeera", race: "Blood Elf", class: "Death Knight", faction: "Horde", level: 45})
+                .expect(500, done);
+        });
+    });
+
+    it('should accept Alliance character if affiliated with Horde only if Horde characters are inactive', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: [{name: "Valeera", race: "Blood Elf", class: "Death Knight", faction: "Horde", level: 45, active: false}]
+        }, function(err) {
+            if (err) { return done(err); }
+            request(app)
+                .post('/account/Betsy/characters')
+                .send({name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2})
+                .expect(200, done);
+        });
+    });
+
+    it('should accept Horde character if affiliated with Alliance only if Alliance characters are inactive', function(done) {
+        Account.create({
+            account_name: "Betsy",
+            link: "https://wow-api.herokuapp.com/account/Betsy",
+            characters: [{name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2, active: false}]
+        }, function(err) {
+            if (err) { return done(err); }
+            request(app)
+                .post('/account/Betsy/characters')
+                .send({name: "Valeera", race: "Blood Elf", class: "Death Knight", faction: "Horde", level: 45})
+                .expect(200, done);
         });
     });
 });
