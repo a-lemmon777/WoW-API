@@ -202,3 +202,33 @@ describe('DELETE /account/{acount_name}', function() {
     });
 });
 
+describe('DELETE /account/{acount_name}/characters/{character_name}', function() {
+    before(function(done) {
+        Account.remove({}, function() {
+            Account.create({
+                account_name: "Betsy",
+                link: "https://wow-api.herokuapp.com/account/Betsy",
+                characters: [{name: "Leeroy", race: "Worgen", class: "Druid", faction: "Alliance", level: 2}]
+                }, done);
+        });
+    });
+
+    after(function(done) {
+        Account.remove({}, done);
+    });
+
+    it('should mark the specified character as inactive', function(done) {
+        request(app)
+            .delete('/account/Betsy/characters/Leeroy')
+            .expect(200)
+            .end(function (err, response) {
+                Account.findOne({account_name: "Betsy"}, function(err, account) {
+                    if (err) return done(err);
+                    var character = account.characters[0].toObject();
+                    character.should.have.property('active');
+                    character.active.should.equal(false);
+                    done();
+                });
+            });
+    });
+});
