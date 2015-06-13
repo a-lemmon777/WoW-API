@@ -1,6 +1,7 @@
 /**
  * Created by a.lemmon777 on 3/28/2015.
  */
+ 
 'use strict';
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
@@ -31,7 +32,7 @@ function getRaceInfo(race) {
     var found = false;
     var index = 0;
     while (!found && index < characteristics.length) {
-        if (race == characteristics[index].race) {
+        if (race === characteristics[index].race) {
             found = true;
             toReturn = characteristics[index];
         }
@@ -43,13 +44,13 @@ function getRaceInfo(race) {
 CharacterSchema.pre('validate', true, function (next, done) {
     next();
     var raceInfo = getRaceInfo(this.race);
-    if (raceInfo == null) {
+    if (raceInfo === null) {
         done(new Error("Please enter a valid race for your character."));
     } else {
         var found = false;
         var index = 0;
         while (!found && index < raceInfo.class.length) {
-            if (this.class == raceInfo.class[index]) {
+            if (this.class === raceInfo.class[index]) {
                 found = true;
             }
             index++;
@@ -65,10 +66,10 @@ CharacterSchema.pre('validate', true, function (next, done) {
 CharacterSchema.pre('validate', true, function (next, done) {
     next();
     var raceInfo = getRaceInfo(this.race);
-    if (raceInfo == null) {
+    if (raceInfo === null) {
         done(new Error("Please enter a valid race for your character."));
     } else {
-        if (this.faction != raceInfo.faction) {
+        if (this.faction !== raceInfo.faction) {
             done(new Error("Please enter a valid faction for your character."));
         } else {
             done();
@@ -92,13 +93,13 @@ var AccountSchema = new Schema({
 
 function hordeVsAllianceValidator(newCharacter) {
     // At least one must be 0
-    return (this.allianceCount == 0 || this.hordeCount == 0);
+    return (this.allianceCount === 0 || this.hordeCount === 0);
 }
 
 AccountSchema.virtual('allianceCount').get(function () {
     var count = 0;
     for (var i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].faction == "Alliance" && this.characters[i].active) {
+        if (this.characters[i].faction === "Alliance" && this.characters[i].active) {
             count++;
         }
     }
@@ -108,7 +109,7 @@ AccountSchema.virtual('allianceCount').get(function () {
 AccountSchema.virtual('hordeCount').get(function () {
     var count = 0;
     for (var i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].faction == "Horde" && this.characters[i].active) {
+        if (this.characters[i].faction === "Horde" && this.characters[i].active) {
             count++;
         }
     }
@@ -130,7 +131,7 @@ AccountSchema.statics.toClient = function(account) {
 
 AccountSchema.methods.getCharacter = function(character_name) {
     for(var i = 0; i < this.characters.length; i++) {
-        if (this.characters[i].name == character_name) {
+        if (this.characters[i].name === character_name) {
             return this.characters[i];
         }
     }
