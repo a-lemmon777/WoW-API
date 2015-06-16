@@ -54,11 +54,11 @@ exports.createCharacter = function(request, response) {
 };
 
 exports.deleteCharacter = function(request, response) {
-    changeCharacterStatus(request, response, false)
+    changeCharacterStatus(request, response, false);
 };
 
 exports.unDeleteCharacter = function(request, response) {
-    changeCharacterStatus(request, response, true)
+    changeCharacterStatus(request, response, true);
 };
 
 exports.getAllCharacters = function(request, response) {
