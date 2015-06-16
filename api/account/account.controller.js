@@ -63,22 +63,40 @@ exports.getAllCharacters = function(request, response) {
 };
 
 exports.deleteCharacter = function(request, response) {
-    var account_name = request.params.account_name;
-    var character_name = request.params.character_name;
-    Account.findOne({account_name: account_name}, function (err, account) {
-        if (err) { return handleError(response, err); }
-        if (account === null) { return handleError(response, new Error("Account not found."));}
-        var character = account.getCharacter(character_name);
-        if (character === null) { return handleError(response, new Error("Character not found."));}
-        character.active = false;
-        account.save(function (err) {
-            if (err) { return handleError(response, err); }
-            return response.status(200).send();
-        });
-    });
+    changeCharacterStatus(request, response, false)
+    // var account_name = request.params.account_name;
+    // var character_name = request.params.character_name;
+    // Account.findOne({account_name: account_name}, function (err, account) {
+    //     if (err) { return handleError(response, err); }
+    //     if (account === null) { return handleError(response, new Error("Account not found."));}
+    //     var character = account.getCharacter(character_name);
+    //     if (character === null) { return handleError(response, new Error("Character not found."));}
+    //     character.active = false;
+    //     account.save(function (err) {
+    //         if (err) { return handleError(response, err); }
+    //         return response.status(200).send();
+    //     });
+    // });
 };
 
 exports.unDeleteCharacter = function(request, response) {
+    changeCharacterStatus(request, response, true)
+    // var account_name = request.params.account_name;
+    // var character_name = request.params.character_name;
+    // Account.findOne({account_name: account_name}, function (err, account) {
+    //     if (err) { return handleError(response, err); }
+    //     if (account === null) { return handleError(response, new Error("Account not found."));}
+    //     var character = account.getCharacter(character_name);
+    //     if (character === null) { return handleError(response, new Error("Character not found."));}
+    //     character.active = true;
+    //     account.save(function (err) {
+    //         if (err) { return handleError(response, err); }
+    //         return response.status(200).send();
+    //     });
+    // });
+};
+
+function changeCharacterStatus(request, response, changeBool) {
     var account_name = request.params.account_name;
     var character_name = request.params.character_name;
     Account.findOne({account_name: account_name}, function (err, account) {
@@ -86,13 +104,13 @@ exports.unDeleteCharacter = function(request, response) {
         if (account === null) { return handleError(response, new Error("Account not found."));}
         var character = account.getCharacter(character_name);
         if (character === null) { return handleError(response, new Error("Character not found."));}
-        character.active = true;
+        character.active = changeBool;
         account.save(function (err) {
             if (err) { return handleError(response, err); }
             return response.status(200).send();
         });
     });
-};
+}
 
 function getURL(request) {
     var appProtocol = request.get('x-forwarded-proto'); // usually http or https
