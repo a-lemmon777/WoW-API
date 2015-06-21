@@ -35,9 +35,9 @@ function getRaceInfo(race) {
     if (race === characteristics[index].race) {
       found = true;
       toReturn = characteristics[index];
-    };
+    }
     index++;
-  };
+  }
   return toReturn;
 }
 
