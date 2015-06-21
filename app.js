@@ -25,7 +25,7 @@ require('./routes')(app);
 
 // Begin listening
 app.listen(app.get('port'), function() {
-    console.log('API is running on port ' + app.get('port'));
+  console.log('API is running on port ' + app.get('port'));
 });
 
 module.exports = app;
