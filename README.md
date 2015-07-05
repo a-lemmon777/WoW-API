@@ -1,4 +1,4 @@
-# WoW-API
+# WoW-API [![Build Status](https://travis-ci.org/emmasax1/WoW-API.svg?branch=master)](https://travis-ci.org/emmasax1/WoW-API) [![Code Climate](https://codeclimate.com/github/emmasax1/WoW-API/badges/gpa.svg)](https://codeclimate.com/github/emmasax1/WoW-API)
 
 This is an API that simulates management of World of Warcraft characters over an HTTP interface. Note that this program doesn't actually connect to World of Warcraft.
 
